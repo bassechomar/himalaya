@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <div class="container my-5 align-items-center">
+        
+       <div class="container my-5">
+
+        <div class="row my-4">
+            <div class="col-md-6 d-flex justify-content-center align-items-center"> 
+                <img src="/uploads/{{ product.image }}" class="img-fluid" alt="{{ product.name }}"> 
+            </div>
+            <div class="col-md-6">
+                <small><i><a href="{{ path ('app_category',{ slug :product.category.slug }) }}">{{ product.category.name }}</a> > {{ product.name }}</i></small>
+                <h1>{{ product.name }}</h1>
+                <span class="d-block mb-3">{{ product.priceWt|price }}</span>
+                {{ product.description|raw }}
+                <a href="{{ path('app_cart_add',{ id : product.id})}}" class="btn btn-outline-success my-3 w-100">Ajouter au panier </a>
+                 
+            </div>
+           
+            
+        </div>
+        <br><br>
+         <div> {% include 'partials/_main.html.twig' %} </div>
+         <div> {% include 'partials/_faq.html.twig' %} </div>
+
+
+    </div>
+     
+        {# test #}
+        {# {{dump(product.category.name)}} #}
+        
+    
+    </div>
+    
+
+{% endblock %}

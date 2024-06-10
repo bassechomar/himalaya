@@ -1,0 +1,16 @@
+{% extends "base.html.twig" %}
+
+{% block body %} 
+   <div class="container my-5">
+    <h1> Inscription </h1>
+    
+    {# formulaire créé de RegisterController #} 
+    {{form(form)}}
+    
+     Vous avez déjà un compte ?  <a href="{{path('app_login')}}"> Connectez-vous </a>
+  </div>
+ 
+ <div class="m-5">
+     
+  </div> 
+{% endblock %}  

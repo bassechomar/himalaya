@@ -1,0 +1,82 @@
+{# ici il faut étendre la vue pour récuperer la vue de Easyadmin  #}
+{% extends '@!EasyAdmin/layout.html.twig' %}
+
+{% block main %}
+    <a target="_blank" href="{{path('app_invoice_admin', {id_order: order.id})}}" class="btn btn-light btn-sm">Voir / Imprimer la facture</a>
+    <h3 class="mt-2">Commande n° {{order.id}}</h3>
+     {# ici nous avons besoin d'afficher le status de la commande // pour cela on inclu le fichier state.html.twig #}
+    {{ include('admin/state.html.twig', {field : {'value': order.state}} ) }}  {#tableau field => la clé value => et dans cette clé il ya orde.state  #}
+    <br>
+    <br>
+    <span>Passée le : {{order.createdAt|date('d/m/Y')}}</span> <br>
+    {# Ajout de l'id de la session Stripe dans les information de commandes por Admin #}
+    {# cela permettra en cas de pb a l'admin de retrouver facilement la commande sur le tableau de bord stripe #}
+    <span>Stripe Session Id: {{order.stripeSessionId}}</span>
+   
+
+    <div class="row my-4">
+        <div class="col-md-6">
+            <strong> Adresse de livraison </strong> <br>
+            {{ order.delivery|raw}}
+        </div>
+        <div class="col-md-6">
+            <strong>Transporteur</strong> <br>
+            {{order.carrierName}}
+        </div>
+    </div>
+
+    <strong>Contenu de la commande </strong>
+         {# test  #}
+        {# {{dump(order)}} #}
+  
+    <table class="table">
+  <thead>
+    <tr>
+    
+      <th scope="col">Image</th>
+      <th scope="col">Nom du produit</th>
+      <th scope="col">Quantité</th>
+      <th scope="col">Prix unitaire</th>
+      <th scope="col">TVA</th>
+      <th scope="col">Total T.T.C</th>
+    </tr>
+  </thead>
+  <tbody>
+  
+    {% for product in order.orderDetails %}
+        {# test  #}
+        {# {{dump(product)}} #}
+        
+        <tr>
+            <td>
+                <img src="/uploads/{{product.productImage}}" widht="100px" height="100px" alt="">
+            </td>
+            <td>{{product.productName}}</td>
+            <td>{{product.productQuantity}}</td>
+            <td>{{product.productPrice|price}}</td>
+            <td>{{product.productTva}}%</td>
+            {% set coef = 1 + (product.productTva / 100) %}
+            <td>{{ ((product.productPrice * coef) * product.productQuantity)|price}}</td>
+            {# <td>{{product.product}}</td> #}
+        </tr>
+    {% endfor %}
+        <tr>
+            <td></td>
+            <td>{{order.carrierName}}</td>
+            <td>1</td>
+            <td></td>
+            <td></td>
+            <td>{{ order.carrierPrice|price}}</td>
+
+        </tr>
+  </tbody>
+</table>
+<div class="text-right">
+    <strong>Total H.T : </strong>{{ (order.totalWt - order.totalTva)|price}} <br>
+    <strong>Total TVA :</strong> {{order.totalTva|price}} <br>
+    <strong>Total T.T.C : </strong> {{order.totalWt|price}} {# totalWt est la methode qui a été definie dans OrderCrudController.php #}
+</div>
+
+    {# test #}
+   
+{% endblock %}

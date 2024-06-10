@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+
+
+{% block body %}
+<div class="container my-5">
+   <h1> Espace membre </h1>
+   
+    <div class="row">
+			
+       <div class="col-md-3">
+				{% include 'account/_menu.html.twig'%}
+			  </div>
+            
+			  <div class="col-md-9">
+          <h5> Mes dernieres commandes </h5>
+          {# on teste d'aborde si l'utilisateur a deja effectué des commande aupres de la boutique #}
+          {% if orders|length == 0 %} 
+              <div class="alert alert-info">
+                  Vous n'avez pas encore passé de commandes aupres de nôtre boutique
+              </div>
+          {% else %}
+
+          {# {{dump(orders)}} #}
+
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">N°</th>
+                  <th scope="col">Date</th>
+                  <th scope="col">Statut </th>
+                  <th scope="col">Total T.T.C </th>
+                  <th scope="col"></th>
+                </tr>
+              </thead>
+              <tbody>
+              {% for order in orders %}
+                  <tr>
+                    <td class="btn btn-info">{{ order.id }}</td>
+                    <td>{{order.createdAt|date('d/m/Y')}}</td>
+                    <td> {{include('admin/state.html.twig', {field : {'value': order.state}})}} </td>
+                    <td>{{ order.totalWt|price}}</td>
+                    <td class="btn btn-success"> <a href="{{path('app_account_order',{'id_order' : order.id})}}"> Voir </a></td>
+                  </tr>
+                  {# class="btn btn-success" #}
+              {% endfor %}
+              </tbody>
+            </table>
+          {% endif %}  
+        </div>
+    </div>
+              {# {{dump(app)}} #}
+              {# inclusion du fichier _menu.html.twig #}
+</div>
+{% endblock %}

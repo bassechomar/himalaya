@@ -1,0 +1,10 @@
+{# test #}
+{# configuration du statut de la commande  #}
+{% if field.value == 1 %}
+    <span class="badge text-bg-secondary"> En attente de payement </span>
+{% elseif field.value == 2 %}
+    <span class="badge text-bg-success"> Payée</span>
+{% elseif field.value == 3 %}
+     <span class="badge text-bg-success">Expediée </span> 
+     {# il faudra donner la possibilité à l'Administrateur de pouvoir modifier l'état d'une commande expediée #}
+{% endif %}

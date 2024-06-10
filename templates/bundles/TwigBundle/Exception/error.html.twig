@@ -1,0 +1,20 @@
+{#  ici nous vue erreur qui va capturer toutes erreurs html (y compris erreur dee code 500 ) #}
+{# Avec un lien qui redirigera l'utilisateur vers la page d'accueil  #}    
+
+{% extends "base.html.twig" %}
+
+{% block body %} 
+   <div class="container my-5">
+      <div class="small-bloc">
+        <h1>Page introuvable </h1>  
+         {# {{status_code}} <br> #}
+
+          {# {{message}} <br>   #} 
+       <a href="{{path('app_home')}}"> Retour à l'accueil </a>
+      </div>
+   </div>
+     
+{% endblock %}  
+
+{# Avant de tester il faut vider le cache // parce que pour jouer ce scenario il nous etre en
+ environnement de production   #}

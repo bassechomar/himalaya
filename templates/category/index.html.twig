@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+
+
+{% block body %}
+<div class="container my-5">
+    <h1> {{category.name}}  </h1>
+    <p> Cette catégorie contient {{category.products|length}} produit(s). </p>
+
+    <div class="row">
+    {# Pour acceder a la collection produits de la categorie  #}
+        {% for product in category.products %}
+            <div class="col-md-3 text-center">
+              <a href="{{path('app_product',{slug : product.slug})}}" class="text-decoration-none">
+                {# la class bootstrap pour que l'image garde les bonnes dimension "img-fluid" #}
+                <img src="/uploads/{{product.image}}" class="img-fluid h-75" width="600" height="600">
+                {# <strong>{{product.name}} </strong> #}
+                <span class="d-block fw-bold text-black ">{{product.name}} </span>
+              </a>
+                {# <span class="d-block">{{product.priceWt ~ ' €'}}</span> #}
+                <span class="d-block">{{product.priceWt|price}}</span>
+                {# {{dump(product)}} #}
+            </div>   
+        {% endfor %}
+    </div>
+
+</div>
+{% endblock %}

@@ -1,0 +1,94 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container my-5">
+        <h1> Espace membre </h1>
+    
+        <div class="row">	
+        
+            <div class="col-md-3">
+            {# inclusion du menu de l'espace membre #}
+                {% include 'account/_menu.html.twig'%} 
+            </div> 
+            
+            <div class="col-md-9">
+                 {# bouton Retour // pour que l'utilisateur puisse revenir à son compte  #}
+                 <small> <a href="{{path('app_account')}}" class="btn btn-light btn-sm">Retour</a> <a target="_blank" href="{{path('app_invoice_customer', {id_order: order.id})}}" class="btn btn-light btn-sm">Ma facture</a></small>
+                {# la commande que l'utilisaterur souhaite consulter #}
+                <h5 class="mt-4"> Ma commande N° {{order.id}} </h5>  
+                <span>Passée le: {{order.createdAt|date('d/m/Y')}}</span> <br>
+                   {# ici nous avons besoin d'afficher le status de la commande // pour cela on inclu le fichier state.html.twig #}
+                {{include('admin/state.html.twig', {field : {'value': order.state}})}}  {#tableau field => la clé value => et dans cette clé il ya orde.state  #}
+                <br>
+                <br>
+                <hr>  
+                {# Ajout de l'id de la session Stripe dans les informations de commandes pour Admin #}
+                {# cela permettra, en cas de problème, à l'admin de retrouver facilement la commande sur le tableau de bord stripe #}
+            
+        <div class="row">
+                    <div class="col-md-6">
+                        <strong> Adresse de livraison </strong> <br>
+                        {{ order.delivery|raw}}
+                    </div>
+
+                    <div class="col-md-6">
+                        <strong>Transporteur</strong> <br>
+                        {{order.carrierName}}
+                   </div>
+        </div>
+        <hr>
+        <strong>Contenu de la commande : </strong>
+         {# test  #}
+        {# {{dump(order)}} #}
+        <table class="table">
+                <thead>
+                    <tr>
+                    <th scope="col">Image</th>
+                    <th scope="col">Nom du produit</th>
+                    <th scope="col">Quantité</th>
+                    <th scope="col">Prix unitaire</th>
+                    <th scope="col">TVA</th>
+                    <th scope="col">Total T.T.C</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for product in order.orderDetails %}
+                        {# test  #}
+                        {# {{dump(product)}} #} 
+                    <tr>
+                        <td>
+                            <img src="/uploads/{{product.productImage}}" widht="100px" height="100px" alt="">
+                        </td>
+                        <td>{{product.productName}}</td>
+                        <td>{{product.productQuantity}}</td>
+                        <td>{{product.productPrice|price}}</td>
+                        <td>{{product.productTva}}%</td>
+                        {# creation de variable twig pour calculer le T.T.C des produits commandés  #}
+                        {% set coef = 1 + (product.productTva / 100) %}
+                        <td>{{ ((product.productPrice * coef) * product.productQuantity)|price}}</td>
+                            {# <td>{{product.product}}</td> #}
+                    </tr>
+                    
+                    {% endfor %}
+
+                    <tr>
+                        <td></td>
+                        <td>{{order.carrierName}}</td>
+                        <td>1</td>
+                        <td></td>
+                        <td></td>
+                        <td>{{ order.carrierPrice|price}}</td>
+                    </tr>
+                </tbody>
+        </table>
+
+        <div class="text-right">
+            <strong>Total H.T : </strong>{{ (order.totalWt - order.totalTva)|price}} <br>
+            <strong>Total TVA :</strong> {{order.totalTva|price}} <br>
+            <strong>Total T.T.C : </strong> {{order.totalWt|price}} {# totalWt est la methode qui a été definie dans OrderCrudController.php #}
+        </div>
+
+    </div>
+ </div>     
+</div>
+{% endblock %}

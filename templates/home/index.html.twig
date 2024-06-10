@@ -1,0 +1,139 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <div id="myCarousel" class="carousel slide mb-6" data-bs-ride="carousel">
+        <div class="carousel-indicators">
+            {# les traits bouton sur l'image principale de la home Page qui permet à l'utilisateur de naviguer  #}
+            {# on rajoute une condition au cas ou il ya une seule image de header #}
+            {% if headers|length > 1 %}
+                {% for key,header in headers %}
+                    {# <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                    <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button> #}
+                    <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="{{ key }}" {% if key == 0 %} class="active" aria-current="true" {% endif %} aria-label=" {{ header.title }}"></button>
+                {% endfor %}
+            {% endif %}
+        </div>
+        <div class="carousel-inner">
+            {# recupreration  de tous les headers  #}
+             {# Pour se faire nous avons besoin de recuperer la clé de notre tableau #}
+            {% for key,header in headers %}
+            {# bootstrap a besoin d'une class 'active' pour afficher le premier élément #}
+           
+            <div class="carousel-item {% if key == 0 %} active {% endif %}"> {# mettre une condition dans if dans la class du carroussel #}
+                <img src="/uploads/{{header.image}}" class="bd-placeholder-img" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false"><rect width="100%" height="100%" fill="var(--bs-secondary-color)"/></img>
+                <div class="container">
+                    <div class="carousel-caption text-start">
+                        <h1> {{ header.title }} </h1>
+                        <p class="opacity-75"> {{ header.content }}</p>
+                        <p><a class="btn btn-lg btn-primary" href="{{header.buttonLink}}"> {{ header.buttonTitle}}</a></p>
+                    </div>
+                </div>
+            </div>
+            
+
+           {% endfor %}
+            
+        </div>
+        {# condition pour afficher les bouton previews et next carousel  #}
+        {% if headers|length > 1 %}
+            <button class="carousel-control-prev" type="button" data-bs-target="#myCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#myCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        {% endif %}
+    </div>
+
+
+    <!-- Marketing messaging and featurettes
+    ================================================== -->
+    <!-- Wrap the rest of the page in another container to center all the content. -->
+  <div class="container marketing">
+    
+
+        <!-- Three columns of text below the carousel -->
+        <div class="row">
+            {% for product in productsIsHomePage %}
+                <div class="col-md-3 text-center">
+              {# {{dump(product)}} #}
+                    <img src="/uploads/{{product.image}}" class="bd-placeholder-img " width="250" height="250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="var(--bs-secondary-color)"/></img>
+                    <h2 class="fw-normal mt-2">{{product.name}}</h2>
+                    <p>{{product.description|raw }}</p>
+                    <p><a class="btn btn-secondary mt-2" href="{{path('app_product', {slug : product.slug} )}}"> Découvrir </a></p>
+                </div><!-- /.col-lg-4 -->
+            {% endfor %}
+            {# <div class="col-lg-4">
+                <svg class="bd-placeholder-img rounded-circle" width="140" height="140" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="var(--bs-secondary-color)"/></svg>
+                <h2 class="fw-normal">Heading</h2>
+                <p>Another exciting bit of representative placeholder content. This time, we've moved on to the second column.</p>
+                <p><a class="btn btn-secondary" href="#">View details &raquo;</a></p>
+            </div><!-- /.col-lg-4 -->
+            <div class="col-lg-4">
+                <svg class="bd-placeholder-img rounded-circle" width="140" height="140" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="var(--bs-secondary-color)"/></svg>
+                <h2 class="fw-normal">Heading</h2>
+                <p>And lastly this, the third column of representative placeholder content.</p>
+                <p><a class="btn btn-secondary" href="#">View details &raquo;</a></p>
+            </div><!-- /.col-lg-4 --> #}
+        </div><!-- /.row -->
+
+    </div>
+        <!-- START THE FEATURETTES -->
+
+      
+
+       
+
+        <hr class="featurette-divider">
+
+        <!-- /END THE FEATURETTES -->
+
+  
+    
+		<div class="row featurette">
+            {% include 'partials/_main.html.twig' %}
+			<div class="col-md-7 text-center">
+				<h2 class="featurette-heading fw-normal lh-1 mb-4" style="margin-bottom: 20px;">Qui sommes nous ?
+				</h2>
+				<p class="lead">Bienvenue à l'Épicerie Himalaya, votre destination ultime pour une expérience gastronomique exotique et authentique.<br>
+					Nichée au cœur de la ville, notre boutique regorge de trésors culinaires venant des quatre coins du globe.<br>
+
+					Plongez dans un voyage gustatif inoubliable en explorant notre vaste sélection de produits du monde entier.<br>
+					Des épices envoûtantes de l'Inde aux délices sucrés de l'Amérique du Sud, en passant par les arômes délicats de l'Asie et les saveurs traditionnelles de l'Afrique, chaque rayon révèle une histoire culinaire unique.
+
+					<br>Chez Himalaya, nous croyons en la qualité, l'authenticité et la diversité.
+					<br>
+					Chaque produit est soigneusement sélectionné pour vous offrir une expérience authentique et immersive.</p>
+				<div class="embed-responsive embed-responsive-16by9">
+                    <iframe 
+                        class="embed-responsive-item" 
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d5805.545432558871!2d1.949337742899598!3d43.319017107507776!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12ae5a8420865131%3A0xa9732e794cc29ea1!2s6%20Rue%20du%2011%20Novembre%2C%2011400%20Castelnaudary!5e0!3m2!1sfr!2sfr!4v1717948657941!5m2!1sfr!2sfr" width="900" height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+                        width="600" 
+                        height="450" 
+                        frameborder="0" 
+                        style="border:0;" 
+                        allowfullscreen="" 
+                        aria-hidden="false" 
+                        tabindex="0">
+                    </iframe>
+                </div>
+				<div class="alert alert-info mx-4" role="alert">
+					<strong>Horaires d'ouverture :</strong>
+					Du lundi au vendredi, de 8h00 à 17h00.
+					<br>
+					<strong>Fermé le :</strong>
+					samedi et dimanche.
+				</div>
+
+			</div>
+            
+			<div class="col-md-5 d-flex justify-content-center">
+				<img src="{{asset('assets/img/2.jpg')}}" class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto" width="500" height="500" role="img" aria-label="Placeholder: 500x500" alt="Placeholder: 500x500">
+
+			</div>
+
+		</div>
+
+{% endblock %}
+  

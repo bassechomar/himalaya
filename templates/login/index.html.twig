@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+
+
+{% block body %}
+    <div class=" container my-5">
+        <h1> Connexion </h1>
+
+        {% if error %}
+            <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+        {% endif %}
+     {# le formulaire de connexion  // app_login #}
+        <form action="{{ path('app_login') }}" method="post">
+            <label for="username">Votre email:</label>
+            <input class="form-control" type="text" id="username" name="_username" value="{{ last_username }}">
+
+            <label class="mt-3" for="password">Votre mot de passe :</label>
+            <input class="form-control" type="password" id="password" name="_password">
+
+        {# {#If you want to control the URL the user is redirected to on success  #}
+            <input type="hidden" name="_target_path" value="{{path('app_account')}}"> 
+
+            <button class=" btn btn-success mt-3" type="submit"> Me connecter </button>
+        </form>
+        <br/>
+        {# un lien d'inscription // path vers RegisterController #}
+       
+       Vous n'avez pas de compte? <a href="{{path('app_register')}}"> Inscrivez-vous </a>
+       <br> 
+        <a href="{{path('app_password')}}"> Mot de passe oublié ? </a> 
+    </div>
+
+{% endblock %}

@@ -1,0 +1,90 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+	<div class="container my-5">
+		<h1>Mon panier
+		</h1>
+		{#  #}
+		<div
+			class="row">
+			{# premiere colonne #}
+			<div class="col-md-8">
+				{% if cart|length == 0 %}
+
+					<div class="infos">Vous n'avez pas encore de produits selectionnés dans votre panier
+					</div>
+				{% else %}
+					Liste de mes produits
+					{% for product in cart %}
+						<div class="col-md-12 mb-3">
+							<div class="row border p-3">
+								<div class="row mt-2">
+								
+								{# {{dump (cart)}} #}
+								<div class="col-md-2">
+									<img src="/uploads/{{product.object.image}}" alt="{{product.object.name}}" class="img-fluid">
+								</div>
+								<div class="col-md-4">
+									<strong>{{product.object.name}}</strong>
+									<span class="d-block">Prix Unitaire :
+										{{product.object.pricewt|price}}</span>
+								</div>
+								<div
+									class="col-md-2 text-right">
+									{# <a class="text-decoration-none mx-2" href="{{path('app_cart_romove',{id: product.object.id})}}">-</a> #}
+									<a class="btn btn-sm btn-outline-secondary" href="{{path('app_cart_decrease',{id:product.object.id})}}">-</a>
+									<span class=" ">
+										{{product.qty}}
+									</span>
+									<a class="btn btn-sm btn-outline-secondary" href="{{path('app_cart_add',{id: product.object.id})}}">+</a>
+								</div>
+								<div class="col-md-2">
+									{{(product.qty * product.object.pricewt)|price}}
+								</div>
+							</div>
+						</div>
+					</div>
+					{% endfor %}
+				{% endif %}
+
+
+			</div>
+			{# deuxieme colonne  #}
+			{% if cart|length > 0 %}
+				<div
+					class="col-md-4">
+					{# Recapitulatif de mon panier (prix, bouton, commander) #}
+
+
+					<div class="bg-light p-3">
+						<div class="d-flex justitifiy-content-between">
+							<span>
+								Quantité produit:
+							</span>
+							<span class="fw-bold mx-4">
+								{{fullCartQuantity}}</span>
+						</div>
+						<div class="d-flex justitify-content-between mt-3 ">
+							<span>
+								Prix total T.T.C :
+							</span>
+							<span class="fw-bold mx-4">
+								{{totalWt|price}}
+							</span>
+						</div>
+						<div
+							class="">
+							{# on relie le bouton commander avec la vue app_order #}
+							<a href="{{path('app_order')}}" class="btn btn-success mt-3 w-100">
+								Commander
+							</a>
+						</div>
+					</div>
+
+				</div>
+			{% endif %}
+
+		</div>
+
+	</div>
+{% endblock %}
