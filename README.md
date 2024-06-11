@@ -1,2 +1,2 @@
 # himalaya
-Partage de travail  sur git 
+Taravail collaboratif du projet himalaya 
